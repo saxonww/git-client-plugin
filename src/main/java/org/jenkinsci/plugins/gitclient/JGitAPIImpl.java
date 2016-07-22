@@ -1687,14 +1687,20 @@ public class JGitAPIImpl extends LegacyCompatibleGitAPIImpl {
         Repository repo = null;
         try {
             Set<String> tags = new HashSet<String>();
-            FileNameMatcher matcher = new FileNameMatcher(tagPattern, '/');
             repo = getRepository();
             Map<String, Ref> refList = repo.getRefDatabase().getRefs(R_TAGS);
-            for (Ref ref : refList.values()) {
-                String name = ref.getName().substring(R_TAGS.length());
-                matcher.reset();
-                matcher.append(name);
-                if (matcher.isMatch()) tags.add(name);
+            String[] splitPatterns = tagPattern.split("\\s+");
+            for (String pattern : splitPatterns) {
+                FileNameMatcher matcher = new FileNameMatcher(pattern, '/');
+                for (Ref ref : refList.values()) {
+                    String name = ref.getName().substring(R_TAGS.length());
+                    matcher.reset();
+                    matcher.append(name);
+                    if (matcher.isMatch()) {
+                        tags.add(name);
+                        continue;
+                    }
+                }
             }
             return tags;
         } catch (IOException e) {
@@ -1713,14 +1719,20 @@ public class JGitAPIImpl extends LegacyCompatibleGitAPIImpl {
         Repository repo = null;
         try {
             Set<String> tags = new HashSet<String>();
-            FileNameMatcher matcher = new FileNameMatcher(tagPattern, '/');
             repo = getRepository();
             Map<String, Ref> refList = repo.getRefDatabase().getRefs(R_TAGS);
-            for (Ref ref : refList.values()) {
-                String name = ref.getName().substring(R_TAGS.length());
-                matcher.reset();
-                matcher.append(name);
-                if (matcher.isMatch()) tags.add(name);
+            String[] splitPatterns = tagPattern.split("\\s+");
+            for (String pattern : splitPatterns) {
+                FileNameMatcher matcher = new FileNameMatcher(pattern, '/');
+                for (Ref ref : refList.values()) {
+                    String name = ref.getName().substring(R_TAGS.length());
+                    matcher.reset();
+                    matcher.append(name);
+                    if (matcher.isMatch()) {
+                        tags.add(name);
+                        continue;
+                    }
+                }
             }
             return tags;
         } catch (IOException e) {

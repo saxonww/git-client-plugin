@@ -2344,7 +2344,7 @@ public class CliGitAPIImpl extends LegacyCompatibleGitAPIImpl {
             args.add("ls-remote", "--tags");
             args.add(getRemoteUrl("origin"));
             if (tagPattern != null)
-                args.add(tagPattern);
+                args.addTokenized(tagPattern);
             String result = launchCommandIn(args, workspace);
             Set<String> tags = new HashSet<String>();
             BufferedReader rdr = new BufferedReader(new StringReader(result));
@@ -2363,7 +2363,8 @@ public class CliGitAPIImpl extends LegacyCompatibleGitAPIImpl {
     public Set<String> getTagNames(String tagPattern) throws GitException {
         try {
             ArgumentListBuilder args = new ArgumentListBuilder();
-            args.add("tag", "-l", tagPattern);
+            args.add("tag", "-l");
+            args.addTokenized(tagPattern);
 
             String result = launchCommandIn(args, workspace);
 
